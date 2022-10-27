@@ -4,32 +4,88 @@ import java.util.*;
 
 public class RadialGraph extends Shape {
 
+    Point center;
+    List<Point> neighbors;
+
     public RadialGraph(Point center, List<Point> neighbors) {
-        // TODO: part of assignment
+        this.center=center;
+        this.neighbors=neighbors;
     }
 
     public RadialGraph(Point center) {
-        // TODO: part of assignment
+        this.center=center;
     }
 
     @Override
     public RadialGraph rotateBy(int degrees) {
-        return null; // TODO: part of assignment
+        double new_pointX;
+        double new_pointY;
+    
+
+        if(this.center.x == 0.0 && this.center.y == 0.0)
+        {
+            for(int i = 0; i < neighbors.size(); i++)
+            {
+               new_pointX = ((neighbors.get(i).x)*Math.cos(Math.toRadians(degrees))) - ((neighbors.get(i).y)*Math.sin(Math.toRadians(degrees)));
+               new_pointY = ((neighbors.get(i).x)*Math.sin(Math.toRadians(degrees))) + ((neighbors.get(i).y)*Math.cos(Math.toRadians(degrees)));
+
+               Point new_coord= new Point(this.neighbors.get(i).name,new_pointX,new_pointY);
+               this.neighbors.set(i,new_coord);
+            }
+        }
+        else
+        {
+            if(center.x < 0.0 && center.y < 0.0)
+            {
+                translateBy(Math.abs(center.x), Math.abs(center.y));
+            }
+            else if(center.x > 0.0 && center.y > 0.0)
+            {
+                translateBy(-1*center.x, -1*center.y);
+            }
+            else if(center.x < 0.0 && center.y > 0.0)
+            {
+                translateBy(Math.abs(center.x), -1*center.y);
+            }
+            else if(center.x > 0.0 && center.y < 0.0)
+            {
+                translateBy(-1*center.x, Math.abs(center.y));
+            }
+        }
+
+        RadialGraph rotatedGraph= new RadialGraph(this.center, this.neighbors);
+        return rotatedGraph;
     }
 
     @Override
     public RadialGraph translateBy(double x, double y) {
-        return null; // TODO: part of assignment
+        double new_pointX;
+        double new_pointY;
+
+        Point new_cen= new Point(this.center.name, this.center.x + x, this.center.y + y);
+        this.center=new_cen;
+
+        for(int i = 0; i < neighbors.size(); i++)
+        {
+            new_pointX = this.neighbors.get(i).x + x;
+            new_pointY = this.neighbors.get(i).y + y;
+
+            Point new_coord= new Point(this.neighbors.get(i).name,new_pointX,new_pointY);
+            this.neighbors.set(i,new_coord);
+        }
+
+        RadialGraph translatedGraph= new RadialGraph(this.center, this.neighbors);
+        return translatedGraph;
     }
 
     @Override
     public String toString() {
-        return null; // TODO: part of assignment
+        return null; 
     }
 
     @Override
     public Point center() {
-        return null; // TODO: part of assignment
+        return this.center; 
     }
 
     /* Driver method given to you as an outline for testing your code. You can modify this as you want, but please keep

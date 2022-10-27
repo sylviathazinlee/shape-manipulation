@@ -3,16 +3,31 @@ package arithmetic;
 public enum PlusOrMinusOne {
     ONE(1),NEG_ONE(-1);
 
-    public int value;
+    int value;
 
-    PlusOrMinusOne(int value)
+    private PlusOrMinusOne(int value)
     {
         this.value=value;
+
     }
 
-    public PlusOrMinusOne getVal()
+    protected static PlusOrMinusOne getValue(int z)
     {
-        return PlusOrMinusOne.ONE;
+        if(z == -1)
+        {
+            return PlusOrMinusOne.NEG_ONE;
+        }
+        else
+        {
+            return PlusOrMinusOne.ONE;
+        }
     }
+
+     @Override
+     public String toString()
+     {
+        return String.valueOf(value);
+     }
+
 }
 
