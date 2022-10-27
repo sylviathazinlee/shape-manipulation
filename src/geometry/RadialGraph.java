@@ -7,91 +7,105 @@ public class RadialGraph extends Shape {
     Point center;
     List<Point> neighbors;
 
-    public RadialGraph(Point center, List<Point> neighbors) {
+    public RadialGraph(Point center, List<Point> neighbors) 
+    {
         this.center=center;
         this.neighbors=neighbors;
     }
 
-    public RadialGraph(Point center) {
+    public RadialGraph(Point center) 
+    {
         this.center=center;
+        this.neighbors = new ArrayList<>();
     }
 
     @Override
     public RadialGraph rotateBy(int degrees) {
-        double new_pointX;
-        double new_pointY;
-    
+        double new_POINTX;
+        double new_POINTY;
+        RadialGraph rotatedGraph = new RadialGraph(this.center, this.neighbors);
 
-        if(this.center.x == 0.0 && this.center.y == 0.0)
+        for(int i = 0; i < rotatedGraph.neighbors.size(); i++)
         {
-            for(int i = 0; i < neighbors.size(); i++)
-            {
-               new_pointX = ((neighbors.get(i).x)*Math.cos(Math.toRadians(degrees))) - ((neighbors.get(i).y)*Math.sin(Math.toRadians(degrees)));
-               new_pointY = ((neighbors.get(i).x)*Math.sin(Math.toRadians(degrees))) + ((neighbors.get(i).y)*Math.cos(Math.toRadians(degrees)));
+            double x = rotatedGraph.neighbors.get(i).x;
+            double y = rotatedGraph.neighbors.get(i).y;
+            double deg = Math.toRadians(degrees);
 
-               Point new_coord= new Point(this.neighbors.get(i).name,new_pointX,new_pointY);
-               this.neighbors.set(i,new_coord);
-            }
-        }
-        else
-        {
-            if(center.x < 0.0 && center.y < 0.0)
-            {
-                translateBy(Math.abs(center.x), Math.abs(center.y));
-            }
-            else if(center.x > 0.0 && center.y > 0.0)
-            {
-                translateBy(-1*center.x, -1*center.y);
-            }
-            else if(center.x < 0.0 && center.y > 0.0)
-            {
-                translateBy(Math.abs(center.x), -1*center.y);
-            }
-            else if(center.x > 0.0 && center.y < 0.0)
-            {
-                translateBy(-1*center.x, Math.abs(center.y));
-            }
-        }
+            new_POINTX = (x * Math.cos(deg)) - (y * Math.sin(deg));
+            new_POINTY = (x * Math.sin(deg)) + (y * Math.cos(deg));
 
-        RadialGraph rotatedGraph= new RadialGraph(this.center, this.neighbors);
+            Point new_coord = new Point(rotatedGraph.neighbors.get(i).name, new_POINTX, new_POINTY);
+            rotatedGraph.neighbors.set(i, new_coord);
+        }
         return rotatedGraph;
     }
 
     @Override
-    public RadialGraph translateBy(double x, double y) {
+    public RadialGraph translateBy(double x, double y) 
+    {
         double new_pointX;
         double new_pointY;
+        Point tempcen = this.center;
+        List<Point> tempneigh = this.neighbors; 
 
-        Point new_cen= new Point(this.center.name, this.center.x + x, this.center.y + y);
-        this.center=new_cen;
+        Point new_cen= new Point(tempcen.name, tempcen.x + x, tempcen.y + y);
+        tempcen=new_cen;
 
-        for(int i = 0; i < neighbors.size(); i++)
+        for(int i = 0; i < tempneigh.size(); i++)
         {
-            new_pointX = this.neighbors.get(i).x + x;
-            new_pointY = this.neighbors.get(i).y + y;
+            new_pointX = tempneigh.get(i).x + x;
+            new_pointY = tempneigh.get(i).y + y;
 
-            Point new_coord= new Point(this.neighbors.get(i).name,new_pointX,new_pointY);
-            this.neighbors.set(i,new_coord);
+            Point new_coord= new Point(tempneigh.get(i).name,new_pointX,new_pointY);
+            tempneigh.set(i,new_coord);
         }
 
-        RadialGraph translatedGraph= new RadialGraph(this.center, this.neighbors);
+        RadialGraph translatedGraph= new RadialGraph(tempcen, tempneigh);
         return translatedGraph;
     }
 
     @Override
     public String toString() {
-        return null; 
+
+        String line = "[" + this.center;
+        List<Point> neighCopy = new ArrayList<Point>(this.neighbors);
+
+        
+        while(neighCopy.size() > 0)
+        {
+            double lastAng = 99;
+            int tempNum = 0;
+            for(int j = 0; j < neighCopy.size(); j++)
+            {
+                double ang = Math.atan2(neighCopy.get(j).y-this.center.y, neighCopy.get(j).x-this.center.x);
+                if( ang < 0.0)
+                {
+                    ang = (ang*-1)+3.14;
+                }
+                if(ang <= lastAng)
+                {
+                    lastAng = ang;
+                    tempNum = j;
+                }
+            }
+            line += "; " + neighCopy.get(tempNum);
+            neighCopy.remove(tempNum);
+        }
+
+        return line + "]";
     }
 
     @Override
-    public Point center() {
+    public Point center() 
+    {
         return this.center; 
     }
 
     /* Driver method given to you as an outline for testing your code. You can modify this as you want, but please keep
      * in mind that the lines already provided here as expected to work exactly as they are (some lines have additional
      * explanation of what is expected) */
-    public static void main(String... args) {
+    public static void main(String... args) 
+    {
         Point center = new Point("center", 0, 0);
         Point east = new Point("east", 1, 0);
         Point west = new Point("west", -1, 0);
