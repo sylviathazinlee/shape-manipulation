@@ -11,6 +11,20 @@ public class RadialGraph extends Shape {
     {
         this.center=center;
         this.neighbors=neighbors;
+
+        if(neighbors.size() > 1)
+        {
+            double distance = Math.round(Math.hypot(neighbors.get(0).x, neighbors.get(0).y));
+            for(int i = 1; i < neighbors.size(); i++)
+            {
+                double nextDistance = Math.round(Math.hypot(neighbors.get(i).x, neighbors.get(i).y));
+                if( distance != nextDistance)
+                {
+                    throw new IllegalArgumentException("Error: edges are not of the same length.");
+                }
+            }
+        }
+
     }
 
     public RadialGraph(Point center) 
@@ -20,22 +34,99 @@ public class RadialGraph extends Shape {
     }
 
     @Override
-    public RadialGraph rotateBy(int degrees) {
-        double new_POINTX;
-        double new_POINTY;
-        RadialGraph rotatedGraph = new RadialGraph(this.center, this.neighbors);
+    public RadialGraph rotateBy(int degrees) 
+    {
+        Point tempcen = this.center;
+        List<Point> tempneigh = new ArrayList<Point>(this.neighbors); 
+        RadialGraph rotatedGraph = new RadialGraph(tempcen, tempneigh);
 
-        for(int i = 0; i < rotatedGraph.neighbors.size(); i++)
+        if(tempcen.x == 0.0 && tempcen.y == 0.0)
         {
-            double x = rotatedGraph.neighbors.get(i).x;
-            double y = rotatedGraph.neighbors.get(i).y;
-            double deg = Math.toRadians(degrees);
-
-            new_POINTX = (x * Math.cos(deg)) - (y * Math.sin(deg));
-            new_POINTY = (x * Math.sin(deg)) + (y * Math.cos(deg));
-
-            Point new_coord = new Point(rotatedGraph.neighbors.get(i).name, new_POINTX, new_POINTY);
-            rotatedGraph.neighbors.set(i, new_coord);
+            for(int i = 0; i < tempneigh.size(); i++)
+            {
+                double x = tempneigh.get(i).x;
+                double y = tempneigh.get(i).y;
+                double deg = Math.toRadians(degrees);
+                //System.out.println(deg);
+            
+                double new_POINTX = Math.round((x * Math.cos(deg)) - (y * Math.sin(deg)));
+                double new_POINTY = Math.round((x * Math.sin(deg)) + (y * Math.cos(deg)));
+                //System.out.println(rotatedGraph.neighbors.get(i).name+new_POINTX+ " "+ new_POINTY);
+                Point new_coord = new Point(tempneigh.get(i).name, new_POINTX, new_POINTY);
+                tempneigh.set(i, new_coord);
+            }
+        }
+        else if(rotatedGraph.center.x < 0.0 && rotatedGraph.center.y < 0.0)
+        {
+            translateBy(Math.abs(tempcen.x), Math.abs(tempcen.y));
+            for(int i = 0; i < tempneigh.size(); i++)
+            {
+                double x = tempneigh.get(i).x;
+                double y = tempneigh.get(i).y;
+                double deg = Math.toRadians(degrees);
+                //System.out.println(deg);
+            
+                double new_POINTX = Math.round((x * Math.cos(deg)) - (y * Math.sin(deg)));
+                double new_POINTY = Math.round((x * Math.sin(deg)) + (y * Math.cos(deg)));
+                //System.out.println(rotatedGraph.neighbors.get(i).name+new_POINTX+ " "+ new_POINTY);
+                Point new_coord = new Point(tempneigh.get(i).name, new_POINTX, new_POINTY);
+                tempneigh.set(i, new_coord);
+            }
+            translateBy(-1 * tempcen.x, -1 * tempcen.y);
+        }
+        else if(rotatedGraph.center.x < 0.0 && rotatedGraph.center.y > 0.0)
+        {
+            translateBy(Math.abs(tempcen.x), -1 * tempcen.y);
+            for(int i = 0; i < tempneigh.size(); i++)
+            {
+                double x = tempneigh.get(i).x;
+                double y = tempneigh.get(i).y;
+                double deg = Math.toRadians(degrees);
+                //System.out.println(deg);
+            
+                double new_POINTX = Math.round((x * Math.cos(deg)) - (y * Math.sin(deg)));
+                double new_POINTY = Math.round((x * Math.sin(deg)) + (y * Math.cos(deg)));
+                //System.out.println(rotatedGraph.neighbors.get(i).name+new_POINTX+ " "+ new_POINTY);
+                Point new_coord = new Point(tempneigh.get(i).name, new_POINTX, new_POINTY);
+                tempneigh.set(i, new_coord);
+            }
+            translateBy(-1 * tempcen.x, Math.abs(tempcen.y));
+        }
+        else if(rotatedGraph.center.x > 0.0 && rotatedGraph.center.y < 0.0)
+        {
+            translateBy(-1 * tempcen.x, Math.abs(tempcen.y));
+            for(int i = 0; i < tempneigh.size(); i++)
+            {
+                double x = tempneigh.get(i).x;
+                double y = tempneigh.get(i).y;
+                double deg = Math.toRadians(degrees);
+                //System.out.println(deg);
+            
+                double new_POINTX = Math.round((x * Math.cos(deg)) - (y * Math.sin(deg)));
+                double new_POINTY = Math.round((x * Math.sin(deg)) + (y * Math.cos(deg)));
+                //System.out.println(rotatedGraph.neighbors.get(i).name+new_POINTX+ " "+ new_POINTY);
+                Point new_coord = new Point(tempneigh.get(i).name, new_POINTX, new_POINTY);
+                tempneigh.set(i, new_coord);
+            }
+            translateBy(Math.abs(tempcen.x), -1 * tempcen.y);
+        }
+        else if(rotatedGraph.center.x > 0.0 && rotatedGraph.center.y >0.0)
+        {
+            translateBy(-1 * tempcen.x, -1 * tempcen.y);
+            for(int i = 0; i < tempneigh.size(); i++)
+            {
+                double x = tempneigh.get(i).x;
+                double y = tempneigh.get(i).y;
+                double deg = Math.toRadians(degrees);
+                //System.out.println(deg);
+            
+                double new_POINTX = Math.round((x * Math.cos(deg)) - (y * Math.sin(deg)));
+                double new_POINTY = Math.round((x * Math.sin(deg)) + (y * Math.cos(deg)));
+                //System.out.println(rotatedGraph.neighbors.get(i).name+new_POINTX+ " "+ new_POINTY);
+                Point new_coord = new Point(tempneigh.get(i).name, new_POINTX, new_POINTY);
+                tempneigh.set(i, new_coord);
+            }
+            translateBy(Math.abs(tempcen.x), Math.abs(tempcen.y));
         }
         return rotatedGraph;
     }
@@ -43,29 +134,29 @@ public class RadialGraph extends Shape {
     @Override
     public RadialGraph translateBy(double x, double y) 
     {
-        double new_pointX;
-        double new_pointY;
+        RadialGraph translatedGraph= new RadialGraph(this.center, this.neighbors);
         Point tempcen = this.center;
-        List<Point> tempneigh = this.neighbors; 
+        List<Point> tempneigh = new ArrayList<Point>(this.neighbors); 
 
         Point new_cen= new Point(tempcen.name, tempcen.x + x, tempcen.y + y);
         tempcen=new_cen;
 
         for(int i = 0; i < tempneigh.size(); i++)
         {
-            new_pointX = tempneigh.get(i).x + x;
-            new_pointY = tempneigh.get(i).y + y;
-
+            double new_pointX = tempneigh.get(i).x + x;
+            double new_pointY = tempneigh.get(i).y + y;
             Point new_coord= new Point(tempneigh.get(i).name,new_pointX,new_pointY);
             tempneigh.set(i,new_coord);
         }
 
-        RadialGraph translatedGraph= new RadialGraph(tempcen, tempneigh);
+        translatedGraph.center= tempcen;
+        translatedGraph.neighbors= tempneigh;
         return translatedGraph;
     }
 
     @Override
-    public String toString() {
+    public String toString() 
+    {
 
         String line = "[" + this.center;
         List<Point> neighCopy = new ArrayList<Point>(this.neighbors);
@@ -121,18 +212,21 @@ public class RadialGraph extends Shape {
 
 
         // This line must throw IllegalArgumentException, since the edges will not be of the same length
-        RadialGraph nope = new RadialGraph(center, Arrays.asList(north, toofarsouth, east, west));
+        //RadialGraph nope = new RadialGraph(center, Arrays.asList(north, toofarsouth, east, west));
 
         Shape g = new RadialGraph(center, Arrays.asList(north, south, east, west));
 
         // Must follow the documentation in the Shape abstract class, and print the following string:
         // [(center, 0.0, 0.0); (east, 1.0, 0.0); (north, 0.0, 1.0); (west, -1.0, 0.0); (south, 0.0, -1.0)]
-        System.out.println(g);
+        System.out.println("Original :"+g);
 
         // After this counterclockwise rotation by 90 degrees, "north" must be at (-1, 0), and similarly for all the
         // other radial points. The center, however, must remain exactly where it was.
         g = g.rotateBy(90);
+        System.out.println("Rotated: "+g);
 
         // you should similarly add tests for the translateBy(x, y) method
+        g = g.translateBy(2, -1);
+        System.out.println("Translated: "+g);
     }
 }
