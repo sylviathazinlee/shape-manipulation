@@ -47,11 +47,10 @@ public class RadialGraph extends Shape {
                 double x = tempneigh.get(i).x;
                 double y = tempneigh.get(i).y;
                 double deg = Math.toRadians(degrees);
-                //System.out.println(deg);
             
                 double new_POINTX = Math.round((x * Math.cos(deg)) - (y * Math.sin(deg)));
                 double new_POINTY = Math.round((x * Math.sin(deg)) + (y * Math.cos(deg)));
-                //System.out.println(rotatedGraph.neighbors.get(i).name+new_POINTX+ " "+ new_POINTY);
+
                 Point new_coord = new Point(tempneigh.get(i).name, new_POINTX, new_POINTY);
                 tempneigh.set(i, new_coord);
             }
@@ -64,11 +63,10 @@ public class RadialGraph extends Shape {
                 double x = tempneigh.get(i).x;
                 double y = tempneigh.get(i).y;
                 double deg = Math.toRadians(degrees);
-                //System.out.println(deg);
             
                 double new_POINTX = Math.round((x * Math.cos(deg)) - (y * Math.sin(deg)));
                 double new_POINTY = Math.round((x * Math.sin(deg)) + (y * Math.cos(deg)));
-                //System.out.println(rotatedGraph.neighbors.get(i).name+new_POINTX+ " "+ new_POINTY);
+
                 Point new_coord = new Point(tempneigh.get(i).name, new_POINTX, new_POINTY);
                 tempneigh.set(i, new_coord);
             }
@@ -82,11 +80,10 @@ public class RadialGraph extends Shape {
                 double x = tempneigh.get(i).x;
                 double y = tempneigh.get(i).y;
                 double deg = Math.toRadians(degrees);
-                //System.out.println(deg);
             
                 double new_POINTX = Math.round((x * Math.cos(deg)) - (y * Math.sin(deg)));
                 double new_POINTY = Math.round((x * Math.sin(deg)) + (y * Math.cos(deg)));
-                //System.out.println(rotatedGraph.neighbors.get(i).name+new_POINTX+ " "+ new_POINTY);
+
                 Point new_coord = new Point(tempneigh.get(i).name, new_POINTX, new_POINTY);
                 tempneigh.set(i, new_coord);
             }
@@ -100,11 +97,10 @@ public class RadialGraph extends Shape {
                 double x = tempneigh.get(i).x;
                 double y = tempneigh.get(i).y;
                 double deg = Math.toRadians(degrees);
-                //System.out.println(deg);
             
                 double new_POINTX = Math.round((x * Math.cos(deg)) - (y * Math.sin(deg)));
                 double new_POINTY = Math.round((x * Math.sin(deg)) + (y * Math.cos(deg)));
-                //System.out.println(rotatedGraph.neighbors.get(i).name+new_POINTX+ " "+ new_POINTY);
+
                 Point new_coord = new Point(tempneigh.get(i).name, new_POINTX, new_POINTY);
                 tempneigh.set(i, new_coord);
             }
@@ -118,11 +114,10 @@ public class RadialGraph extends Shape {
                 double x = tempneigh.get(i).x;
                 double y = tempneigh.get(i).y;
                 double deg = Math.toRadians(degrees);
-                //System.out.println(deg);
             
                 double new_POINTX = Math.round((x * Math.cos(deg)) - (y * Math.sin(deg)));
                 double new_POINTY = Math.round((x * Math.sin(deg)) + (y * Math.cos(deg)));
-                //System.out.println(rotatedGraph.neighbors.get(i).name+new_POINTX+ " "+ new_POINTY);
+
                 Point new_coord = new Point(tempneigh.get(i).name, new_POINTX, new_POINTY);
                 tempneigh.set(i, new_coord);
             }
@@ -164,7 +159,7 @@ public class RadialGraph extends Shape {
         
         while(neighCopy.size() > 0)
         {
-            double lastAng = 99;
+            double lastAng = Double.MAX_VALUE;
             int tempNum = 0;
             for(int j = 0; j < neighCopy.size(); j++)
             {
@@ -202,7 +197,7 @@ public class RadialGraph extends Shape {
         Point west = new Point("west", -1, 0);
         Point north = new Point("north", 0, 1);
         Point south = new Point("south", 0, -1);
-        Point toofarsouth = new Point("south", 0, -2);
+        //Point toofarsouth = new Point("south", 0, -2);
 
         // A single node is a valid radial graph.
         RadialGraph lonely = new RadialGraph(center);
@@ -218,15 +213,15 @@ public class RadialGraph extends Shape {
 
         // Must follow the documentation in the Shape abstract class, and print the following string:
         // [(center, 0.0, 0.0); (east, 1.0, 0.0); (north, 0.0, 1.0); (west, -1.0, 0.0); (south, 0.0, -1.0)]
-        System.out.println("Original :"+g);
+        System.out.println("Original :" + g);
 
         // After this counterclockwise rotation by 90 degrees, "north" must be at (-1, 0), and similarly for all the
         // other radial points. The center, however, must remain exactly where it was.
         g = g.rotateBy(90);
-        System.out.println("Rotated: "+g);
+        System.out.println("Rotated: " + g);
 
         // you should similarly add tests for the translateBy(x, y) method
         g = g.translateBy(2, -1);
-        System.out.println("Translated: "+g);
+        System.out.println("Translated: " + g);
     }
 }
