@@ -146,12 +146,15 @@ public class Square extends Shape {
         return Double.parseDouble(decFormat.format(randomNum));
     }
 
+    /*
+    //driver method to test this file
     public static void main(String... args) 
     {
-        Point one = new Point("A", 1, 2);
-        Point two = new Point("B", 3, 2);
-        Point three = new Point("C", 3, 4);
-        Point four = new Point("D", 1, 4);
+        Point one = new Point("A", 10, 20);
+        Point two = new Point("B", 20, 20);
+        Point three = new Point("C", 20, 10);
+        Point four = new Point("D", 10, 10);
+
 
 
         Shape firstSquare = new Square(one, two, three, four);
@@ -166,5 +169,5 @@ public class Square extends Shape {
         System.out.println("Translated: " + firstSquare);
 
     }
-
+    */
 }
